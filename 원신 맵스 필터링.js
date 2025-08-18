@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         원신 맵스 필터링
 // @namespace    genshin-maps-filter
-// @version      1.0
-// @description  지도, 핀, 태그 UI (핀위치, 기타태그 AND/OR 동작, 숨김/펼침)
-// @match        https://genshin.gamedot.org/?mid=genshinmaps
+// @version      5.8
+// @description  지도, 핀, 태그 UI (핀위치, 기타태그 AND/OR/NOT 동작, 숨김/펼침)
+// @match        https://genshin.gamedot.org/?mid=genshinmaps#
 // @downloadURL  https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
 // @updateURL    https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
 // ==/UserScript==
@@ -19,6 +19,7 @@
   const TAG_DICT = {};
   let PIN_FILTER = "모두";
   let TAG_MODE = "OR";
+  let NOT_MODE = false;   // 추가: NOT 버튼 상태
   let ui = null;
   let tagBox = null;
 
@@ -53,7 +54,7 @@
 
     // 지도 보기
     const mapBox = document.createElement('div');
-    mapBox.style.cssText = 'margin-bottom:0px;';  // flex 제거
+    mapBox.style.cssText = 'margin-bottom:0px;';
 
     const mapHeader = document.createElement('div');
     mapHeader.style.cssText = 'margin-bottom:0px;font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:space-between;';
@@ -61,7 +62,7 @@
     const mapTitle = document.createElement('span');
     mapTitle.textContent = "지도 보기";
 
-// 숨김/펼침 버튼
+    // 숨김/펼침 버튼
     const toggleBtn = document.createElement('button');
     toggleBtn.textContent = "▼";
     toggleBtn.style.cssText = 'margin-left:auto;border:0;border-radius:4px;background:#1c1c1e;color:#fff;cursor:pointer;font-size:14px;';
@@ -70,11 +71,11 @@
       if (tagBox.style.display === "none") {
         tagBox.style.display = "";
         pinBox.style.cssText = 'margin-bottom:10px;padding-top:6px;border-top:1px solid #444';
-        toggleBtn.textContent = "▼"; // 펼침 상태
+        toggleBtn.textContent = "▼";
       } else {
         tagBox.style.display = "none";
         pinBox.style.cssText = 'margin-bottom:0px;padding-top:6px;border-top:1px solid #444';
-        toggleBtn.textContent = "▲"; // 숨김 상태
+        toggleBtn.textContent = "▲";
       }
     });
     mapHeader.appendChild(mapTitle);
@@ -112,7 +113,7 @@
     pinBox.appendChild(makePinBtn('지하'));
     ui.appendChild(pinBox);
 
-    // 기타 태그 + 스위치
+    // 기타 태그 + 스위치 + NOT 버튼
     tagBox = document.createElement('div');
     tagBox.style.cssText = 'padding-top:6px;border-top:1px solid #444';
     const header = document.createElement('div');
@@ -127,7 +128,17 @@
 
     const modeText = document.createElement('span');
     modeText.textContent = TAG_MODE;
-    modeText.style.cssText = 'margin-right:-15px;font-size:12px;';
+    modeText.style.cssText = 'margin-right:-19px;font-size:12px;font-weight:normal;';
+
+    // NOT 버튼
+    const notBtn = document.createElement('button');
+    notBtn.textContent = "NOT";
+    notBtn.style.cssText = 'margin-left:4px;padding:2px 6px;border:0;border-radius:4px;background:#444;color:#fff;cursor:pointer;font-size:12px;';
+    notBtn.addEventListener('click', ()=>{
+      NOT_MODE = !NOT_MODE;
+      notBtn.style.background = NOT_MODE ? '#5f9ea0' : '#444';
+      refresh();
+    });
 
     const switchLabel = document.createElement('label');
     switchLabel.style.cssText = 'position:relative;display:inline-block;width:50px;height:24px;cursor:pointer;transform:scale(0.6);transform-origin:right center;';
@@ -154,6 +165,7 @@
 
     switchWrap.appendChild(modeText);
     switchWrap.appendChild(switchLabel);
+    switchWrap.appendChild(notBtn);   // NOT 버튼 추가
 
     header.appendChild(titleSpan);
     header.appendChild(switchWrap);
@@ -238,11 +250,13 @@
         filtered = filtered.filter(md => {
           if (!md?.tag) return false;
           const tags = Array.isArray(md.tag) ? md.tag.map(String) : String(md.tag).split(',');
+          let cond;
           if (TAG_MODE === "OR") {
-            return tags.some(t => activeTags.includes(t.trim()));
+            cond = tags.some(t => activeTags.includes(t.trim()));
           } else {
-            return activeTags.every(t => tags.includes(t));
+            cond = activeTags.every(t => tags.includes(t));
           }
+          return NOT_MODE ? !cond : cond;
         });
       }
       return filtered;
