@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         원신 맵스 필터링
 // @namespace    genshin-maps-filter
-// @version      1.2
+// @version      1.0
 // @description  지도, 핀, 태그 UI (핀위치, 기타태그 AND/OR 동작, 숨김/펼침)
-// @match        https://genshin.gamedot.org/?mid=genshinmaps*
-// @run-at       document-end
+// @match        https://genshin.gamedot.org/?mid=genshinmaps
+// @downloadURL  https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
+// @updateURL    https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
 // ==/UserScript==
 
 (function() {
