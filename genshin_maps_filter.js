@@ -4,8 +4,8 @@
 // @version      5.8
 // @description  지도, 핀, 태그 UI (핀위치, 기타태그 AND/OR/NOT 동작, 숨김/펼침)
 // @match        https://genshin.gamedot.org/?mid=genshinmaps#
-// @downloadURL  https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
-// @updateURL    https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/원신%20맵스%20필터링.js
+// @downloadURL  https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/genshin_maps_filter.js
+// @updateURL    https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/genshin_maps_filter.js
 // ==/UserScript==
 
 (function() {
