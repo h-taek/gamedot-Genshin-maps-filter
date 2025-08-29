@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         원신 맵스 필터링
 // @namespace    genshin-maps-filter
-// @version      5.8.1
+// @version      5.8.1.1
 // @description  지도/핀/태그 필터링, 경로 탐색 UI
 // @match        https://genshin.gamedot.org/?mid=genshinmaps*
 // @downloadURL  https://raw.githubusercontent.com/h-taek/gamedot-Genshin-maps-filter/refs/heads/main/genshin_maps_filter.js
