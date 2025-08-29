@@ -106,6 +106,7 @@
       selectMode=!selectMode;
       btnSelect.textContent="핀 선택";
       btnSelect.style.background = selectMode ? "#5f9ea0" : "#444";
+      if (!selectMode) startSelectMode = false;
       resetSelection();
     };
 
